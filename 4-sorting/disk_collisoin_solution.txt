@@ -1,6 +1,8 @@
 # you can write to stdout for debugging purposes, e.g.
 # print "this is a debug message"
 
+# this was accomplished by using and sorting two stacks for the boundaries of the disks
+
 def solution(A):
     lower_bounds = [None]*len(A)
     upper_bounds = [None]*len(A)

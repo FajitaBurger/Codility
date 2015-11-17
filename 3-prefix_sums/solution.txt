@@ -5,6 +5,11 @@
 //idea is that the minimum slice in the array can only be 2 or 3 elements long
 //this is not easy to see, but notice its impossible to find the minimum slice in less than O(N^2) if the slice is k length
 //therefore we can see that there must be a constant upper bound to the slice length
+//from there we can find some recursive insight into this fact
+	//observe a minimal slice of any length can be composed only of length 2 and length 1 slices
+	//we are not allowed length 1 slices, so any slice of odd length must therefore be composed of length 3 slices
+	//any subslice cannot have a smaller average than the master slice, or it would be the slice with the smallest average
+	//therefore it suffices to find the starting indices of the smalles slice of length two or three
 
 int solution(int A[], int N) {
     int i;
