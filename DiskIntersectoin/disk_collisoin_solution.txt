@@ -1,0 +1,23 @@
+# you can write to stdout for debugging purposes, e.g.
+# print "this is a debug message"
+
+def solution(A):
+    lower_bounds = [None]*len(A)
+    upper_bounds = [None]*len(A)
+    for i in range (0, len(A)):
+        lower_bounds[i] = i - A[i]
+        upper_bounds[i] = i + A[i]
+    lower_bounds.sort()
+    upper_bounds.sort()
+    num_colls = 0
+    num_unclosed_lower_bounds = 0
+    upper_bound_idx = 0;
+    for i in range(0, len(A)):
+        while lower_bounds[i] > upper_bounds[upper_bound_idx]:
+            upper_bound_idx = upper_bound_idx + 1
+            num_unclosed_lower_bounds = num_unclosed_lower_bounds - 1;
+        num_colls = num_colls + num_unclosed_lower_bounds
+        num_unclosed_lower_bounds = num_unclosed_lower_bounds + 1
+        if num_colls > 10000000:
+            return -1
+    return num_colls
