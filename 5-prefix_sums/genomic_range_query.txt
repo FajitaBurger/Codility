@@ -1,0 +1,106 @@
+// you can also use imports, for example:
+// import java.util.*;
+
+// you can write to stdout for debugging purposes, e.g.
+// System.out.println("this is a debug message");
+
+//100 percent correctness score
+
+class Solution {
+    public int update_dist(int[] char_map, int idx, int char_cnt) {
+        if (char_map[idx] > 0) { 
+            char_cnt = 0;
+        } else if (char_cnt >= 0) {
+            char_cnt++;
+        }
+        char_map[idx] = char_cnt;
+        return char_cnt;
+    }
+    
+    public int[] solution(String S, int[] P, int[] Q) {
+        // write your code in Java SE 8
+        int num_queries = P.length;
+        int num_char = S.length();
+        int [] result = new int[num_queries];
+        //because there are only 4 impact factors to keep track of, we can simply create a prefix/suffix mapping for distance to each nucleotide at each position in the array
+        //these arrays are binary and denote the position of each nucleotide with a 1
+        int [] A_map = new int[num_char];
+        int [] C_map = new int[num_char];
+        int [] G_map = new int[num_char];
+        int [] T_map = new int[num_char];
+        for (int i = 0; i < num_char; i++) {
+            switch (S.charAt(i)) {
+                case 'A':
+                    A_map[i] = 1;
+                    break;
+                case 'C':
+                    C_map[i] = 1;
+                    break;
+                case 'G':
+                    G_map[i] = 1;
+                    break;
+                case 'T':
+                    T_map[i] = 1;
+                    break;
+                default:
+                    return result;
+            }
+        }
+        /*for (int i = 0; i < A_map.length; i++) {
+            System.out.print(A_map[i]);
+        }
+        System.out.println();
+        for (int i = 0; i < A_map.length; i++) {
+            System.out.print(C_map[i]);
+        }
+        System.out.println();
+        for (int i = 0; i < A_map.length; i++) {
+            System.out.print(G_map[i]);
+        }
+        System.out.println();
+        for (int i = 0; i < A_map.length; i++) {
+            System.out.print(T_map[i]);
+        }
+        System.out.println();
+        System.out.println();*/
+        //We now modify the mapping arrays to store the distance (from lower index to higher index) to the next nucleotide for each type of nucleotide
+        //these variables store the distance to the next occurrence of the nucleotide - a value of -1 indicates no next occurence
+        int A_cnt = -1;
+        int C_cnt = -1;
+        int G_cnt = -1;
+        int T_cnt = -1;
+        for (int i = num_char - 1; i >= 0; i--) {
+            A_cnt = update_dist(A_map, i, A_cnt);
+            C_cnt = update_dist(C_map, i, C_cnt);
+            G_cnt = update_dist(G_map, i, G_cnt);
+            T_cnt = update_dist(T_map, i, T_cnt);
+        }
+        /*for (int i = 0; i < A_map.length; i++) {
+            System.out.print(A_map[i]);
+        }
+        System.out.println();
+        for (int i = 0; i < A_map.length; i++) {
+            System.out.print(C_map[i]);
+        }
+        System.out.println();
+        for (int i = 0; i < A_map.length; i++) {
+            System.out.print(G_map[i]);
+        }
+        System.out.println();
+        for (int i = 0; i < A_map.length; i++) {
+            System.out.print(T_map[i]);
+        }
+        System.out.println();
+        System.out.println();*/
+        //now we take our mapping arrays and use them to process the queries
+        for (int i = 0; i < P.length; i++) {
+            int start = P[i];
+            int distance = Q[i] - P[i];
+            if (A_map[start] >= 0 && A_map[start] <= distance) result[i] = 1;
+            else if (C_map[start] >= 0 && C_map[start] <= distance) result[i] = 2;
+            else if (G_map[start] >= 0 && G_map[start] <= distance) result[i] = 3;
+            else if (T_map[start] >= 0 && T_map[start] <= distance) result[i] = 4;
+        }
+        return result;
+    }
+}
