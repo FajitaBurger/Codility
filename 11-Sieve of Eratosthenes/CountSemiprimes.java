@@ -4,6 +4,8 @@
 // you can write to stdout for debugging purposes, e.g.
 // System.out.println("this is a debug message");
 
+//100 percent correct
+
 class Solution {
     public int [] arrayF(int N) {
         int [] F = new int [N];
